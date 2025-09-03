@@ -1,0 +1,144 @@
+<div class="app">
+  <h2>🔢 محول الأنظمة العددية</h2>
+
+  <!-- العشري -->
+  <div class="field">
+    <label>العشري (Decimal):</label>
+    <input id="decimal" oninput="fromDecimal('decimal')">
+  </div>
+
+  <!-- الثنائي -->
+  <div class="field">
+    <label>الثنائي (Binary):</label>
+    <input id="binary" oninput="toDecimal('binary',2)">
+  </div>
+
+  <!-- الثماني -->
+  <div class="field">
+    <label>الثماني (Octal):</label>
+    <input id="octal" oninput="toDecimal('octal',8)">
+  </div>
+
+  <!-- المخصص -->
+  <div class="row">
+    <div class="field">
+      <label>الأساس:</label>
+      <input id="customBase" type="number" min="2" max="10" value="2" oninput="updateCustom()">
+    </div>
+    <div class="field">
+      <label>الناتج:</label>
+      <input id="customResult" oninput="customToDecimal()">
+    </div>
+  </div>
+</div>
+
+<style>
+  /* تعديل لتوافق مع الهيكل العام */
+  .app {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 25px 35px;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 22px;
+  }
+
+  .field {
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #444;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .row .field {
+    flex: 1;
+  }
+</style>
+
+<script>
+  // الدوال الخاصة بالمحول
+  function fromDecimal(source) {
+    let dec = Number(document.getElementById("decimal").value);
+    if (source === 'decimal') {
+      document.getElementById("binary").value = convertFromDecimal(dec, 2);
+      document.getElementById("octal").value = convertFromDecimal(dec, 8);
+      let base = Number(document.getElementById("customBase").value);
+      document.getElementById("customResult").value = convertFromDecimal(dec, base);
+    }
+  }
+
+  function toDecimal(fieldId, base) {
+    let val = document.getElementById(fieldId).value;
+    val = filterDigits(val, base);
+    document.getElementById(fieldId).value = val;
+    let dec = convertToDecimal(val, base);
+    document.getElementById("decimal").value = dec;
+    fromDecimal('decimal');
+  }
+
+  function updateCustom() {
+    let base = Number(document.getElementById("customBase").value);
+    if (base < 2 || base > 10) return;
+    let dec = Number(document.getElementById("decimal").value);
+    document.getElementById("customResult").value = convertFromDecimal(dec, base);
+  }
+
+  function customToDecimal() {
+    let base = Number(document.getElementById("customBase").value);
+    let val = document.getElementById("customResult").value;
+    val = filterDigits(val, base);
+    document.getElementById("customResult").value = val;
+    let dec = convertToDecimal(val, base);
+    document.getElementById("decimal").value = dec;
+    fromDecimal('decimal');
+  }
+
+  function convertFromDecimal(num, base) {
+    if (isNaN(num) || num === 0) return 0;
+    let result = "";
+    while (num > 0) {
+      result = (num % base) + result;
+      num = Math.floor(num / base);
+    }
+    return result;
+  }
+
+  function convertToDecimal(str, base) {
+    if (!str) return 0;
+    let num = 0, power = 1;
+    for (let i = str.length - 1; i >= 0; i--) {
+      num += Number(str[i]) * power;
+      power *= base;
+    }
+    return num;
+  }
+
+  function filterDigits(val, base) {
+    return val.split("").filter(d => Number(d) < base).join("");
+  }
+</script>
