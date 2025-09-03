@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>محول الأنظمة العددية</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- إدراج الأجزاء -->
+  <div id="header"></div>
+  <div id="sidebar-container"></div>
+
+  <!-- محتوى الصفحة -->
+  <main>
+    <div class="app">
+      <div style="max-width:300px;margin:auto;padding:20px;background:#f9f9f9;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.2);">
+  <h3 style="text-align:center;">آلة حاسبة</h3>
+  <input type="text" id="result" readonly style="width:100%;padding:10px;font-size:18px;text-align:right;margin-bottom:10px;border:1px solid #ccc;border-radius:8px;">
+  
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+    <button onclick="appendValue('7')">7</button>
+    <button onclick="appendValue('8')">8</button>
+    <button onclick="appendValue('9')">9</button>
+    <button onclick="clearResult()">C</button>
+    
+    <button onclick="appendValue('4')">4</button>
+    <button onclick="appendValue('5')">5</button>
+    <button onclick="appendValue('6')">6</button>
+    <button onclick="appendValue('/')">÷</button>
+    
+    <button onclick="appendValue('1')">1</button>
+    <button onclick="appendValue('2')">2</button>
+    <button onclick="appendValue('3')">3</button>
+    <button onclick="appendValue('*')">×</button>
+    
+    <button onclick="appendValue('0')">0</button>
+    <button onclick="appendValue('.')">.</button>
+    <button onclick="calculateResult()">=</button>
+    <button onclick="appendValue('-')">−</button>
+    
+    <button style="grid-column: span 4;" onclick="appendValue('+')">+</button>
+  </div>
+</div>
+
+<script>
+  function appendValue(val) {
+    document.getElementById("result").value += val;
+  }
+  function clearResult() {
+    document.getElementById("result").value = "";
+  }
+  function calculateResult() {
+    try {
+      document.getElementById("result").value = eval(document.getElementById("result").value);
+    } catch {
+      document.getElementById("result").value = "خطأ";
+    }
+  }
+</script>
+
+<style>
+  button {
+    padding:15px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    background:#3498db;
+    color:#fff;
+    cursor:pointer;
+    transition:0.3s;
+  }
+  button:hover {
+    background:#2980b9;
+  }
+</style>
+
+      <!-- هنا تبني الأدوات -->
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+<script>
+  // تحميل الأجزاء
+  function includeHTML(file, elementId) {
+    fetch(file)
+      .then(r => r.text())
+      .then(html => { document.getElementById(elementId).innerHTML = html; })
+      .catch(() => {});
+  }
+  includeHTML("header.html", "header");
+  includeHTML("sidebar.html", "sidebar-container");
+  includeHTML("footer.html", "footer");
+
+  // فتح/إغلاق القائمة الجانبية
+  function toggleSidebar() {
+    const el = document.getElementById('sidebar'); // داخل sidebar.html
+    if (el) el.classList.toggle('open');
+  }
+
+  // إغلاق القائمة عند الضغط في مكان فارغ
+  document.addEventListener("click", function (event) {
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.querySelector(".menu-btn");
+
+    if (
+      sidebar &&
+      sidebar.classList.contains("open") &&
+      !sidebar.contains(event.target) &&
+      !menuBtn.contains(event.target)
+    ) {
+      sidebar.classList.remove("open");
+    }
+  });
+
+  // ====== دوال التحويل ======
+  // ... باقي الدوال تبقى كما هي ...
+</script>
+
+</body>
+</html>

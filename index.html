@@ -1,180 +1,62 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>موقع الأدوات الحسابية</title>
-  <style>
-    body {
-      font-family: "Tahoma", sans-serif;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: #f2f2f7;
-    }
-
-    header {
-      background: #2c3e50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      position: relative;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    header p {
-      margin: 5px 0 0 0;
-      font-size: 16px;
-    }
-    .sidebar .home-btn {
-  display: block;
-  color: white;
-  text-decoration: none;
-  margin: 10px 0;
-  padding: 12px;       /* أكبر من باقي الروابط */
-  border-radius: 8px;
-  background-color: #e74c3c; /* لون مميز */
-  font-size: 18px;     /* أكبر حجم خط */
-  font-weight: bold;
-  text-align: center;
-  transition: background 0.3s;
-}
-
-.sidebar .home-btn:hover {
-  background-color: #c0392b; /* لون عند المرور */
-}
-
-
-    /* زر القائمة */
-    .menu-btn {
-      position: absolute;
-      left: 20px;
-      top: 25px;
-      font-size: 24px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: white;
-    }
-
-    /* الشريط الجانبي */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: -220px;
-      width: 200px;
-      height: 100%;
-      background-color: #34495e;
-      color: white;
-      padding: 20px;
-      box-sizing: border-box;
-      transition: left 0.3s ease;
-      z-index: 1000;
-    }
-
-    .sidebar.open { left: 0; }
-
-    .sidebar h3 { margin-top: 0; }
-    .sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin: 10px 0;
-      padding: 8px;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    .sidebar a:hover { background-color: #2c3e50; }
-
-    main {
-      flex: 1;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    footer {
-      background: #2c3e50;
-      color: white;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .social a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    @media(max-width:800px){
-      main { padding: 10px; }
-    }
-  </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>محول الأنظمة العددية</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+  <!-- إدراج الأجزاء -->
+  <div id="header"></div>
+  <div id="sidebar-container"></div>
 
-<header>
-  <button class="menu-btn" onclick="toggleSidebar()">☰ القائمة</button>
-  <h1>موقع الأدوات الحسابية</h1>
-  <p>تحويل الأنظمة العددية، وحدات القياس، وأكثر!</p>
-</header>
+  <!-- محتوى الصفحة -->
+  <main>
+    <div class="app">
+      <h2>🔢 محول الأنظمة العددية</h2>
+      <!-- هنا تبني الأدوات -->
+    </div>
+  </main>
 
-<aside class="sidebar" id="sidebar">
-  <h3>الأدوات</h3>
-   <a href="#" class="home-btn" onclick="loadPage('home.html')">الصفحة الرئيسية</a>
-  <a href="#" onclick="loadPage('decimal.html'); toggleSidebar(); return false;">تحويل الأنظمة العددية</a>
-  <a href="#" onclick="loadPage('unit-converter.html'); toggleSidebar(); return false;">تحويل وحدات القياس</a>
-  <a href="#" onclick="loadPage('calculator.html'); toggleSidebar(); return false;">آلة حاسبة رياضية</a>
-  <a href="https://www.google.com" target="_blank">اذهب إلى غوغل</a>
-</aside>
-
-<main id="main-content">
-  <!-- هنا سيظهر المحتوى عند الضغط على الروابط -->
-</main>
-
-<footer>
-  <p>تابعونا على:</p>
-  <div class="social">
-    <a href="https://www.facebook.com/fares.tria.2025?locale=ar_AR" target="_blank">Facebook</a>
-    <a href="https://www.youtube.com/@الرياضيات_ببساطة_01" target="_blank">YouTube</a>
-    <a href="https://www.instagram.com/yourpage" target="_blank">Instagram</a>
-  </div>
-  <p>&copy; 2025 موقع الأدوات الحسابية</p>
-</footer>
+  <div id="footer"></div>
 
 <script>
-// فتح/إغلاق الشريط الجانبي
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-}
-
-// إغلاق الشريط عند الضغط خارجًا
-document.addEventListener('click', function(event) {
-  const sidebar = document.getElementById('sidebar');
-  if (!sidebar.contains(event.target) && !event.target.classList.contains('menu-btn')) {
-    sidebar.classList.remove('open');
+  // تحميل الأجزاء
+  function includeHTML(file, elementId) {
+    fetch(file)
+      .then(r => r.text())
+      .then(html => { document.getElementById(elementId).innerHTML = html; })
+      .catch(() => {});
   }
-});
+  includeHTML("header.html", "header");
+  includeHTML("sidebar.html", "sidebar-container");
+  includeHTML("footer.html", "footer");
 
-// تحميل محتوى الصفحات الديناميكي
-function loadPage(page) {
-  fetch(page)
-    .then(response => response.text())
-    .then(html => {
-      document.getElementById('main-content').innerHTML = html;
-    })
-    .catch(err => console.error('حدث خطأ عند تحميل الصفحة:', err));
-}
+  // فتح/إغلاق القائمة الجانبية
+  function toggleSidebar() {
+    const el = document.getElementById('sidebar'); // داخل sidebar.html
+    if (el) el.classList.toggle('open');
+  }
+
+  // إغلاق القائمة عند الضغط في مكان فارغ
+  document.addEventListener("click", function (event) {
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.querySelector(".menu-btn");
+
+    if (
+      sidebar &&
+      sidebar.classList.contains("open") &&
+      !sidebar.contains(event.target) &&
+      !menuBtn.contains(event.target)
+    ) {
+      sidebar.classList.remove("open");
+    }
+  });
+
+  // ====== دوال التحويل ======
+  // ... باقي الدوال تبقى كما هي ...
 </script>
 
 </body>
 </html>
-
